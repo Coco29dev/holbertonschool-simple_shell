@@ -14,11 +14,13 @@ void execute_command(char *cmd)
 	if (pid == 0)
 	{
 	char *argv[2];
+	char *envp[1];
 
 	argv[0] = cmd;
 	argv[1] = NULL;
+	envp[0] = NULL;
 
-	if (execve(cmd, argv, environ) == -1)
+	if (execve(cmd, argv, envp) == -1)
 	{
 		perror(cmd);
 	}
