@@ -2,9 +2,11 @@
 
 /**
  * main - main
+ * @cmd: commande
  * Return: 0
- *
  */
+
+extern void execute_command(char *cmd);
 
 #define PROMPT "#cisfun$ "
 
