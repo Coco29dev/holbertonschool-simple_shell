@@ -8,11 +8,9 @@
 #include <sys/wait.h>
 #include <string.h>
 
-void execute_command(char *cmd);
-void execute_command(char *cmd);
-void print_pid(void);
-void print_ppid(void);
-void fork_example(void);
-void wait_example(void);
+char **tokenize_input(char *lineptr, int *num_tokens);
+int read_input(char **lineptr, size_t *n);
+void execmd(char **argv);
+
 
 #endif
