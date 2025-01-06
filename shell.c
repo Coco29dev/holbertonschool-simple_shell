@@ -1,6 +1,6 @@
 #include "shell.h"
 
-#define PROMPT "#cisfun$ "
+#define PROMPT "($) "
 #define DELIM " \n"
 
 /**
