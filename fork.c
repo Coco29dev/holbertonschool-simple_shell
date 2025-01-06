@@ -1,16 +1,15 @@
 #include "shell.h"
 
 /**
- * main - main
+ * fork_example - main
  * Return: 0/1
  */
-int main(void)
+void fork_example(void)
 {
 pid_t pid = fork();
 if (pid == -1)
 {
 perror("fork null");
-return (1);
 }
 else if (pid == 0)
 {
@@ -20,5 +19,4 @@ else
 {
 printf("Je suis le processus parent, le PID du fils est %d\n", pid);
 }
-return (0);
 }
