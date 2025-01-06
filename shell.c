@@ -6,7 +6,6 @@
 /**
  * execmd - Executes a command using execve.
  * @argv: The argument array of the command.
- *
  * This function forks a new process and executes the command.
  * If the command contains a full path, execve is called directly.
  * Otherwise, it outputs an error message.
@@ -40,13 +39,11 @@ else
 wait(NULL);
 }
 }
-
 /**
  * read_input - Reads a line of input from the user.
  * @lineptr: A pointer to the buffer where the line will be stored.
  * @n: The size of the buffer.
- *
- * Returns 1 on success, 0 if EOF (Ctrl+D) or error.
+ * Return: 1 on success, 0 if EOF (Ctrl+D) or error.
  */
 int read_input(char **lineptr, size_t *n)
 {
@@ -62,9 +59,8 @@ return (1);
  * tokenize_input - Tokenizes the command line into an argument array.
  * @lineptr: The command line to tokenize.
  * @num_tokens: The number of tokens extracted.
- *
  * This function splits the command line into individual words.
- * It returns a dynamically allocated array of strings (NULL-terminated).
+ * Return: a dynamically allocated array of strings (NULL-terminated).
  */
 char **tokenize_input(char *lineptr, int *num_tokens)
 {
@@ -72,7 +68,8 @@ char *token, *lineptr_copy;
 char **cmd_args;
 int i = 0;
 lineptr_copy = strdup(lineptr);
-if (!lineptr_copy) {
+if (!lineptr_copy)
+{
 perror("malloc failed");
 return (NULL);
 }
@@ -91,7 +88,8 @@ free(lineptr_copy);
 return (NULL);
 }
 token = strtok(lineptr, DELIM);
-while (token != NULL) {
+while (token != NULL)
+{
 cmd_args[i++] = token;
 token = strtok(NULL, DELIM);
 }
@@ -102,9 +100,9 @@ return (cmd_args);
 
 /**
  * main - The main shell loop that reads commands and executes them.
- *
  * This function displays the prompt, reads user input, tokenizes the command,
- * and then executes it. It also handles the EOF condition and frees allocated memory.
+ * and then executes it.
+ * Return: 0
  */
 int main(void)
 {
