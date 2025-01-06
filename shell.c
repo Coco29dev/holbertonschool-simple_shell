@@ -6,7 +6,7 @@
  */
 
 
-#define PROMPT "#cisfun$ "
+#define PROMPT "($) "
 
 int main(void)
 {
