@@ -21,9 +21,11 @@ void execmd(char **argv)
 	}
 	if (pid == 0)/*processus enfant*/
 	{
+		char *cmd_path = NULL;
 		if (strchr(argv[0], '/') != NULL)/*si chemin est complet*/
 	{
-		if (execve(argv[0], argv, NULL) == -1)/*execute la commande*/
+		cmd_path = find_command_in_path(argv[0]);
+		if (cmd_path == NULL)
 		{
 		/*si execve echoue*/
 		fprintf(stderr, "./hsh: No such file or directory\n");
@@ -31,6 +33,10 @@ void execmd(char **argv)
 		}
 	}
 	else
+	{
+		cmd_path = strdup(argv[0]);
+	}
+	if (execve(cmd_path, argv, NULL) == -1)
 	{
 		/*si la commande n'a pas de chemin complet*/
 		fprintf(stderr, "./hsh: No such file or directory\n");
