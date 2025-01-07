@@ -12,38 +12,41 @@
  */
 void execmd(char **argv)
 {
-pid_t pid = fork();
-if (pid == -1)
-{
-perror("fork failed");
-return;
-}
-if (pid == 0)
-{
-char *cmd_path = NULL;
-if (strchr(argv[0], '/') == NULL)
-{
-cmd_path = find_command_in_path(argv[0]);
-if (cmd_path == NULL)
-{
-fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
-}
-}
-else
-{
-cmd_path = strdup(argv[0]);
-}
-if (execve(cmd_path, argv, NULL) == -1)
-{
-fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
-}
-}
-else
-{
-wait(NULL);
-}
+	pid_t pid = fork();/*creer nouveau processus*/
+
+	if (pid == -1)
+	{
+		perror("fork failed");/*si fork echoue*/
+		return;
+	}
+	if (pid == 0)
+	{
+		char *cmd_path = NULL;
+		if (strchr(argv[0], '/') != NULL)
+	{
+		cmd_path = find_command_in_path(argv[0]);
+		if (cmd_path == NULL)
+		{
+		/*si execve echoue*/
+		fprintf(stderr, "./hsh: No such file or directory\n");
+		exit(1);
+		}
+	}
+	else
+	{
+		cmd_path = strdup(argv[0]);
+	}
+	if (execve(cmd_path, argv, NULL) == -1)
+	{
+		/*si la commande n'a pas de chemin complet*/
+		fprintf(stderr, "./hsh: No such file or directory\n");
+	exit(1);
+	}
+	}
+	else
+	{
+	wait(NULL);
+	}
 }
 /**
  * read_input - Reads a line of input from the user.
@@ -53,13 +56,16 @@ wait(NULL);
  */
 int read_input(char **lineptr, size_t *n)
 {
-ssize_t nchars_read = getline(lineptr, n, stdin);
-if (nchars_read == -1)
-{
-return (0);
+	/*lecture de la ligne*/
+	ssize_t nchars_read = getline(lineptr, n, stdin);
+
+	if (nchars_read == -1)/*si erreur ou EOF rencontree*/
+	{
+	return (0);/*retourne 0 pour signaler erreur ou EOF*/
+	}
+	return (1);/*retourne 1 si lecture reussie*/
 }
-return (1);
-}
+
 /**
  * tokenize_input - Tokenizes the command line into an argument array.
  * @lineptr: The command line to tokenize.
@@ -69,39 +75,43 @@ return (1);
  */
 char **tokenize_input(char *lineptr, int *num_tokens)
 {
-char *token, *lineptr_copy;
-char **cmd_args;
-int i = 0;
-lineptr_copy = strdup(lineptr);
-if (!lineptr_copy)
-{
-perror("malloc failed");
-return (NULL);
+	char *token, *lineptr_copy;
+	char **cmd_args;
+	int i = 0;
+
+	lineptr_copy = strdup(lineptr);/*copie la ligne pour eviter modif*/
+	if (!lineptr_copy)
+	{
+		perror("malloc failed");/*erreur de malloc*/
+		return (NULL);
+	}
+	*num_tokens = 0;/*initialise nombre de tokens*/
+	token = strtok(lineptr_copy, DELIM);/*on commence a separer la ligne*/
+	while (token != NULL)
+	{
+		(*num_tokens)++;/*incrementer nombre de tokens*/
+		token = strtok(NULL, DELIM);/*obtenir token suivant*/
+	}
+	/*allouer memoire pour tableau d'arguments*/
+	cmd_args = malloc(sizeof(char *) * (*num_tokens + 1));
+	if (!cmd_args)
+	{
+		/*erreur de malloc pour cmd_args*/
+		perror("malloc failed for cmd_args");
+		free(lineptr_copy);/*liberer memoire allouee pour copie ligne*/
+		return (NULL);
+	}
+	token = strtok(lineptr, DELIM);/*reprendre decoupage ligne originale*/
+	while (token != NULL)
+	{
+		cmd_args[i++] = token;/*ajouter chaque token dans tableau*/
+		token = strtok(NULL, DELIM);/*obtenir token suivant*/
+	}
+	cmd_args[i] = NULL;/*terminer tableau avec NULL*/
+	free(lineptr_copy);/*liberer memoire de la copie de la ligne*/
+	return (cmd_args);/*retourner tableau d'arguments*/
 }
-*num_tokens = 0;
-token = strtok(lineptr_copy, DELIM);
-while (token != NULL)
-{
-(*num_tokens)++;
-token = strtok(NULL, DELIM);
-}
-cmd_args = malloc(sizeof(char *) * (*num_tokens + 1));
-if (!cmd_args)
-{
-perror("malloc failed for cmd_args");
-free(lineptr_copy);
-return (NULL);
-}
-token = strtok(lineptr, DELIM);
-while (token != NULL)
-{
-cmd_args[i++] = token;
-token = strtok(NULL, DELIM);
-}
-cmd_args[i] = NULL;
-free(lineptr_copy);
-return (cmd_args);
-}
+
 /**
  * main - The main shell loop that reads commands and executes them.
  * This function displays the prompt, reads user input, tokenizes the command,
@@ -110,36 +120,39 @@ return (cmd_args);
  */
 int main(void)
 {
-char *lineptr = NULL;
-char **cmd_args;
-size_t n = 0;
-int num_tokens;
-int first_run = 1;
-int is_interactive = isatty(STDIN_FILENO);
-while (1)
-{
-if (is_interactive && (first_run || lineptr[0] != '\0'))
-{
-printf(PROMPT);
-first_run = 0;
-}
-if (!read_input(&lineptr, &n))
-{
-if (is_interactive)
-printf("\n");
-break;
-}
-cmd_args = tokenize_input(lineptr, &num_tokens);
-if (!cmd_args)
-continue;
-if (cmd_args[0] == NULL)
-{
-free(cmd_args);
-continue;
-}
-execmd(cmd_args);
-free(cmd_args);
-}
-free(lineptr);
-return (0);
+	char *lineptr = NULL;/*pointeur vers ligne entree par utilisateur*/
+	char **cmd_args;/*tableau pour arguments de la commande*/
+	size_t n = 0;/*taille du buffer pour getline*/
+	int num_tokens;/*nombre de tokens dans la commande*/
+	int first_run = 1;/*indicateur pour savoir si 1ere execution*/
+	int is_interactive = isatty(STDIN_FILENO);/*verifie si entree interac*/
+
+	while (1)/*boucle infinie pour maintenir shell en fonctionnement*/
+	{
+	if (is_interactive && (first_run || lineptr[0] != '\0'))
+		/*si shell est interactif*/
+	{
+		printf(PROMPT);/*affiche invite de commande*/
+		first_run = 0;/*une fois invite affichee plus 1ere execution*/
+	}
+	if (!read_input(&lineptr, &n))/*lecture entree utilisateur*/
+	{
+		if (is_interactive)
+		printf("\n");
+		/*affiche saut de ligne si EOF ou erreur en mode interactif*/
+		break;/*quitte la boucle si EOF ou erreur*/
+	}
+	cmd_args = tokenize_input(lineptr, &num_tokens);/*tokenise entree*/
+	if (!cmd_args)
+	continue;/*passe a iteration suivante*/
+	if (cmd_args[0] == NULL)
+	{
+		free(cmd_args);/*libere memoire alloue pour cmd_args*/
+		continue;/*passe a iteration suivante*/
+	}
+	execmd(cmd_args);/*execution commande*/
+	free(cmd_args);/*libere memoire allouee pour cmd_args*/
+	}
+	free(lineptr);/*libere memoire allouee pour ligne entree*/
+	return (0);/*fin du programme*/
 }
