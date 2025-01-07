@@ -110,12 +110,19 @@ char *lineptr = NULL;
 char **cmd_args;
 size_t n = 0;
 int num_tokens;
+int first_run = 1;
+int is_interactive = isatty(STDIN_FILENO);
 while (1)
 {
+if (is_interactive && (first_run || lineptr[0] != '\0'))
+{
 printf(PROMPT);
+first_run = 0;
+}
 if (!read_input(&lineptr, &n))
 {
-printf("\nExiting the shell...\n");
+if (is_interactive)
+printf("\n");
 break;
 }
 cmd_args = tokenize_input(lineptr, &num_tokens);
