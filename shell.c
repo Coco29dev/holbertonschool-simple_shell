@@ -13,6 +13,7 @@
 void execmd(char **argv)
 {
 	pid_t pid = fork();/*creer nouveau processus*/
+
 	if (pid == -1)
 	{
 		perror("fork failed");/*si fork echoue*/
