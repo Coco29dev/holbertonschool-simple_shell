@@ -12,32 +12,32 @@
  */
 void execmd(char **argv)
 {
-pid_t pid = fork();
-if (pid == -1)
-{
-perror("fork failed");
-return;
-}
-if (pid == 0)
-{
-if (strchr(argv[0], '/') != NULL)
-{
-if (execve(argv[0], argv, NULL) == -1)
-{
-fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
-}
-}
-else
-{
-fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
-}
-}
-else
-{
-wait(NULL);
-}
+	pid_t pid = fork();
+	if (pid == -1)
+	{
+		perror("fork failed");
+		return;
+	}
+	if (pid == 0)
+	{
+		if (strchr(argv[0], '/') != NULL)
+	{
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+		fprintf(stderr, "./hsh: No such file or directory\n");
+		exit(1);
+		}
+	}
+	else
+	{
+		fprintf(stderr, "./hsh: No such file or directory\n");
+	exit(1);
+	}
+	}
+	else
+	{
+	wait(NULL);
+	}
 }
 /**
  * read_input - Reads a line of input from the user.
@@ -47,12 +47,12 @@ wait(NULL);
  */
 int read_input(char **lineptr, size_t *n)
 {
-ssize_t nchars_read = getline(lineptr, n, stdin);
-if (nchars_read == -1)
-{
-return (0);
-}
-return (1);
+	ssize_t nchars_read = getline(lineptr, n, stdin);
+	if (nchars_read == -1)
+	{
+	return (0);
+	}
+	return (1);
 }
 
 /**
@@ -64,38 +64,39 @@ return (1);
  */
 char **tokenize_input(char *lineptr, int *num_tokens)
 {
-char *token, *lineptr_copy;
-char **cmd_args;
-int i = 0;
-lineptr_copy = strdup(lineptr);
-if (!lineptr_copy)
-{
-perror("malloc failed");
-return (NULL);
-}
-*num_tokens = 0;
-token = strtok(lineptr_copy, DELIM);
-while (token != NULL)
-{
-(*num_tokens)++;
-token = strtok(NULL, DELIM);
-}
-cmd_args = malloc(sizeof(char *) * (*num_tokens + 1));
-if (!cmd_args)
-{
-perror("malloc failed for cmd_args");
-free(lineptr_copy);
-return (NULL);
-}
-token = strtok(lineptr, DELIM);
-while (token != NULL)
-{
-cmd_args[i++] = token;
-token = strtok(NULL, DELIM);
-}
-cmd_args[i] = NULL;
-free(lineptr_copy);
-return (cmd_args);
+	char *token, *lineptr_copy;
+	char **cmd_args;
+	int i = 0;
+
+	lineptr_copy = strdup(lineptr);
+	if (!lineptr_copy)
+	{
+		perror("malloc failed");
+		return (NULL);
+	}
+	*num_tokens = 0;
+	token = strtok(lineptr_copy, DELIM);
+	while (token != NULL)
+	{
+		(*num_tokens)++;
+		token = strtok(NULL, DELIM);
+	}
+	cmd_args = malloc(sizeof(char *) * (*num_tokens + 1));
+	if (!cmd_args)
+	{
+		perror("malloc failed for cmd_args");
+		free(lineptr_copy);
+		return (NULL);
+	}
+	token = strtok(lineptr, DELIM);
+	while (token != NULL)
+	{
+		cmd_args[i++] = token;
+		token = strtok(NULL, DELIM);
+	}
+	cmd_args[i] = NULL;
+	free(lineptr_copy);
+	return (cmd_args);
 }
 
 /**
@@ -106,36 +107,37 @@ return (cmd_args);
  */
 int main(void)
 {
-char *lineptr = NULL;
-char **cmd_args;
-size_t n = 0;
-int num_tokens;
-int first_run = 1;
-int is_interactive = isatty(STDIN_FILENO);
-while (1)
-{
-if (is_interactive && (first_run || lineptr[0] != '\0'))
-{
-printf(PROMPT);
-first_run = 0;
-}
-if (!read_input(&lineptr, &n))
-{
-if (is_interactive)
-printf("\n");
-break;
-}
-cmd_args = tokenize_input(lineptr, &num_tokens);
-if (!cmd_args)
-continue;
-if (cmd_args[0] == NULL)
-{
-free(cmd_args);
-continue;
-}
-execmd(cmd_args);
-free(cmd_args);
-}
-free(lineptr);
-return (0);
+	char *lineptr = NULL;
+	char **cmd_args;
+	size_t n = 0;
+	int num_tokens;
+	int first_run = 1;
+	int is_interactive = isatty(STDIN_FILENO);
+
+	while (1)
+	{
+	if (is_interactive && (first_run || lineptr[0] != '\0'))
+	{
+		printf(PROMPT);
+		first_run = 0;
+	}
+	if (!read_input(&lineptr, &n))
+	{
+		if (is_interactive)
+		printf("\n");
+		break;
+	}
+	cmd_args = tokenize_input(lineptr, &num_tokens);
+	if (!cmd_args)
+	continue;
+	if (cmd_args[0] == NULL)
+	{
+		free(cmd_args);
+		continue;
+	}
+	execmd(cmd_args);
+	free(cmd_args);
+	}
+	free(lineptr);
+	return (0);
 }
