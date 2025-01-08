@@ -18,6 +18,7 @@ return;
 }
 if (pid == 0)
 {
+char *cmd_path = NULL;
 if (strchr(argv[0], '/') == NULL)
 {
 cmd_path = find_command_in_path(argv[0]);
@@ -42,7 +43,6 @@ else
 wait(NULL);
 }
 }
-char *cmd_path = NULL;
 /**
  * read_input - Reads a line of input from the user.
  * @lineptr: A pointer to the buffer where the line will be stored.
