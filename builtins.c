@@ -25,8 +25,11 @@ int handle_builtin(char **cmd_args)
 	{
 	exit(0);
 	}
-
-	/*Ajouter ici autres builtin*/
+	if (cmd_args[0] != NULL && strcmp(cmd_args[0], "exit") == 0)
+	{
+	free(cmd_args);
+	exit(0);
+	}
 
 	return 0;
 }
