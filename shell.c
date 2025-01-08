@@ -140,8 +140,8 @@ if (handle_builtin(cmd_args))
 	free(cmd_args);
 	continue;
 }
-execmd(cmd_args);
-free(cmd_args);
+	execmd(cmd_args);
+	free(cmd_args);
 }
 free(lineptr);
 return (0);
