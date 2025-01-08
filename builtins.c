@@ -35,7 +35,7 @@ int handle_builtin(char **cmd_args)
 
 	if (strcmp(cmd_args[0], "exit") == 0)
 	{
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 	if (strcmp(cmd_args[0], "env") == 0)
         {
