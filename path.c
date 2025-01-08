@@ -4,12 +4,6 @@
  *@cmd : Le nom de la commande a rechercher
  *Return: chemin complet de la commande si elle est trouvee, sinon NULL
  */
-#include "shell.h"
-/**
- *find_command_in_path - rechercher fichier executable dans repertoire listes
- *@cmd : Le nom de la commande a rechercher
- *Return: chemin complet de la commande si elle est trouvee, sinon NULL
- */
 char *find_command_in_path(char *cmd)
 {
 	char *path = getenv("PATH");

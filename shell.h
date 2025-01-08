@@ -16,5 +16,6 @@ void execmd(char **argv);
 char *find_command_in_path(char *cmd);
 int handle_builtin(char **cmd_args);
 void env_builtin(void);
+void cmd_exit(char *cmd);
 
 #endif
