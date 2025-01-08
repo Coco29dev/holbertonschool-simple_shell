@@ -10,31 +10,34 @@
  */
 void execmd(char **argv)
 {
-pid_t pid = fork();
-if (pid == -1)
-{
-perror("fork failed");
-return;
-}
-if (pid == 0)
-{
 char *cmd_path = NULL;
+pid_t pid;
 if (strchr(argv[0], '/') == NULL)
 {
 cmd_path = find_command_in_path(argv[0]);
 if (cmd_path == NULL)
 {
 fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
+return;
 }
 }
 else
 {
 cmd_path = strdup(argv[0]);
 }
+pid = fork();
+if (pid == -1)
+{
+perror("fork failed");
+free(cmd_path);
+return;
+}
+if (pid == 0)
+{
 if (execve(cmd_path, argv, NULL) == -1)
 {
 fprintf(stderr, "./hsh: No such file or directory\n");
+free(cmd_path);
 exit(1);
 }
 }
@@ -42,6 +45,7 @@ else
 {
 wait(NULL);
 }
+free(cmd_path);
 }
 /**
  * read_input - Reads a line of input from the user.
