@@ -135,6 +135,8 @@ if (cmd_args[0] == NULL)
 free(cmd_args);
 continue;
 }
+if (handle_builtin(cmd_args))
+continue;
 execmd(cmd_args);
 free(cmd_args);
 }
