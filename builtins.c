@@ -41,7 +41,7 @@ int handle_builtin(char **cmd_args)
 
 	if (strcmp(cmd_args[0], "exit") == 0)
 	{
-	cmd_exit(cmd_args);
+	cmd_exit();
 	return (1);
 	}
 
