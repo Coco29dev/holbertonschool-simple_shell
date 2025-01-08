@@ -7,7 +7,7 @@
  */
 void cmd_exit(char *cmd)
 {
-if (strncmp(cmd, "exit", strlen(cmd)) == 0)
+if (strcmp(cmd, "exit")  == 0)
 {
 exit(EXIT_SUCCESS);
 }
