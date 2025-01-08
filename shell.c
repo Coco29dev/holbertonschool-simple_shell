@@ -137,11 +137,11 @@ continue;
 }
 if (handle_builtin(cmd_args))
 {
-	free(cmd_args);
-	continue;
+free(cmd_args);
+break;
 }
-	execmd(cmd_args);
-	free(cmd_args);
+execmd(cmd_args);
+free(cmd_args);
 }
 free(lineptr);
 return (0);
