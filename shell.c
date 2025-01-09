@@ -57,11 +57,12 @@ wait(NULL); /* Attend que le processus fils se termine */
 int read_input(char **lineptr, size_t *n)
 {
 ssize_t nchars_read = getline(lineptr, n, stdin);
-if (nchars_read == -1)
+/* Lit une ligne depuis stdin */
+if (nchars_read == -1) /* Si la lecture echoue (fin de fichier ou erreur) */
 {
-return (0);
+return (0); /* Retourne 0 pour indiquer une erreur ou fin de fichier */
 }
-return (1);
+return (1); /* Retourne 1 si la lecture a reussi */
 }
 /**
  * tokenize_input - Tokenizes the command line into an argument array.
@@ -73,37 +74,43 @@ return (1);
 char **tokenize_input(char *lineptr, int *num_tokens)
 {
 char *token, *lineptr_copy;
+/* Declare des pointeurs pour le token et la copie de la ligne */
 char **cmd_args;
-int i = 0;
-lineptr_copy = strdup(lineptr);
-if (!lineptr_copy)
+/* Declare un tableau de pointeurs pour les arguments de la commande */
+int i = 0; /* Compteur pour les arguments du tableau */
+lineptr_copy = strdup(lineptr); /* Cree une copie de la ligne d'entree */
+if (!lineptr_copy) /* Si la copie echoue */
 {
-perror("malloc failed");
-return (NULL);
+perror("malloc failed"); /* Affiche une erreur */
+return (NULL); /* Retourne NULL en cas d'erreur */
 }
-*num_tokens = 0;
+*num_tokens = 0; /* Initialise le nombre de tokens a 0 */
 token = strtok(lineptr_copy, DELIM);
-while (token != NULL)
+/* Divise la ligne en tokens en utilisant DELIM comme separateur */
+while (token != NULL) /* Tant qu'il y a des tokens */
 {
-(*num_tokens)++;
-token = strtok(NULL, DELIM);
+(*num_tokens)++; /* Incremente le nombre de tokens */
+token = strtok(NULL, DELIM); /* Passe au token suivant */
 }
 cmd_args = malloc(sizeof(char *) * (*num_tokens + 1));
-if (!cmd_args)
+/* Alloue de la memoire pour le tableau d'arguments */
+if (!cmd_args) /* Si l'allocation echoue */
 {
-perror("malloc failed for cmd_args");
-free(lineptr_copy);
-return (NULL);
+perror("malloc failed for cmd_args"); /* Affiche une erreur */
+free(lineptr_copy); /* Libere la copie de la ligne */
+return (NULL); /* Retourne NULL en cas d'erreur */
 }
 token = strtok(lineptr, DELIM);
-while (token != NULL)
+/* Recommence la tokenisation de la ligne d'origine */
+while (token != NULL) /* Tant qu'il y a des tokens */
 {
-cmd_args[i++] = token;
-token = strtok(NULL, DELIM);
+cmd_args[i++] = token; /* Ajoute le token au tableau des arguments */
+token = strtok(NULL, DELIM); /* Passe au token suivant */
 }
 cmd_args[i] = NULL;
-free(lineptr_copy);
-return (cmd_args);
+/* Termine le tableau avec un pointeur NULL pour marquer la fin */
+free(lineptr_copy); /* Libere la copie de la ligne d'entree */
+return (cmd_args); /* Retourne le tableau d'arguments */
 }
 /**
  * main - The main shell loop that reads commands and executes them.
@@ -116,36 +123,26 @@ int main(void)
 char *lineptr = NULL;
 char **cmd_args;
 size_t n = 0;
-int num_tokens;
 int first_run = 1;
 int is_interactive = isatty(STDIN_FILENO);
 while (1)
 {
 if (is_interactive && (first_run || lineptr[0] != '\0'))
-{
 printf(PROMPT);
 first_run = 0;
-}
 if (!read_input(&lineptr, &n))
 {
 if (is_interactive)
 printf("\n");
 break;
 }
-cmd_args = tokenize_input(lineptr, &num_tokens);
-if (!cmd_args)
-continue;
-if (cmd_args[0] == NULL)
+cmd_args = tokenize_input(lineptr, NULL);
+if (cmd_args && cmd_args[0] && !handle_builtin(cmd_args))
 {
-free(cmd_args);
-continue;
-}
-if (handle_builtin(cmd_args))
-{
-free(cmd_args);
-break;
-}
 execmd(cmd_args);
+free(cmd_args);
+}
+else if (cmd_args)
 free(cmd_args);
 }
 free(lineptr);
