@@ -1,6 +1,8 @@
 #include "shell.h"
+
 #define PROMPT "($) "
 #define DELIM " \n"
+
 /**
  * execmd - Executes a command using execve.
  * @argv: The argument array of the command.
@@ -10,37 +12,40 @@
  */
 void execmd(char **argv)
 {
-pid_t pid = fork();
-if (pid == -1)
+pid_t pid = fork(); /* Cree un processus fils avec fork() */
+if (pid == -1) /* Si fork echoue */
 {
-perror("fork failed");
-return;
+perror("fork failed"); /* Affiche un message d'erreur */
+return; /* Sort de la fonction */
 }
-if (pid == 0)
+if (pid == 0) /* Code execute par le processus fils */
 {
 char *cmd_path = NULL;
-if (strchr(argv[0], '/') == NULL)
+if (strchr(argv[0], '/') == NULL) /* Si la commande ne contient pas de '/' */
 {
 cmd_path = find_command_in_path(argv[0]);
-if (cmd_path == NULL)
+/* Recherche le chemin de la commande dans PATH */
+if (cmd_path == NULL) /* Si la commande n'est pas trouvee */
 {
 fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
+/* Affiche une erreur */
+exit(1); /* Quitte avec un code d'erreur */
 }
 }
-else
+else /* Si la commande contient un chemin absolu ou relatif */
 {
-cmd_path = strdup(argv[0]);
+cmd_path = strdup(argv[0]); /* Copie le chemin complet de la commande */
 }
 if (execve(cmd_path, argv, NULL) == -1)
+/* Tente d'executer la commande avec execve */
 {
 fprintf(stderr, "./hsh: No such file or directory\n");
-exit(1);
+exit(1); /* Quitte avec un code d'erreur */
 }
 }
-else
+else /* Code execute par le processus parent */
 {
-wait(NULL);
+wait(NULL); /* Attend que le processus fils se termine */
 }
 }
 /**
