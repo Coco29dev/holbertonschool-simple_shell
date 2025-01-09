@@ -10,12 +10,13 @@
 void env_builtin(void)
 {
 	char **env = environ;
+	/* Pointeur pour parcourir les variables d'environnement */
 
 	while (*env != NULL)
-
+	/* Tant que l'element actuel de l'environnement n'est pas NULL */
 	{
-		printf("%s\n", *env);
-		env++;
+		printf("%s\n", *env); /* Affiche la variable d'environnement courante */
+		env++; /* Passee a la variable d'environnement suivante */
 	}
 }
 
@@ -31,19 +32,22 @@ void env_builtin(void)
 int handle_builtin(char **cmd_args)
 {
 	if (cmd_args == NULL || cmd_args[0] == NULL)
-	return (0);
+	/* Si les arguments sont vides */
+	return (0); /* Retourne 0 si aucun argument n'est fourni */
 
 	if (strcmp(cmd_args[0], "env") == 0)
+	/* Si la commande est "env" */
 	{
-		env_builtin();
-		return (1);
+		env_builtin(); /* Appelle la fonction pour afficher les variables d'env */
+		return (1); /* Retourne 1 pour indiquer que la commande a ete traitee */
 	}
 
 	if (strcmp(cmd_args[0], "exit") == 0)
+	/* Si la commande est "exit" */
 	{
-	cmd_exit();
-	return (1);
+	cmd_exit(); /* Appelle la fonction pour quitter le shell */
+	return (1); /* Retourne 1 pour indiquer que la commande a ete traitee */
 	}
 
-	return (0);
+	return (0); /* Retourne 0 si la commande n'est pas une commande interne */
 }
