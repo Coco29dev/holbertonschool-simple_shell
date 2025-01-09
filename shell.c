@@ -123,26 +123,36 @@ int main(void)
 char *lineptr = NULL;
 char **cmd_args;
 size_t n = 0;
+int num_tokens;
 int first_run = 1;
 int is_interactive = isatty(STDIN_FILENO);
 while (1)
 {
 if (is_interactive && (first_run || lineptr[0] != '\0'))
+{
 printf(PROMPT);
 first_run = 0;
+}
 if (!read_input(&lineptr, &n))
 {
 if (is_interactive)
 printf("\n");
 break;
 }
-cmd_args = tokenize_input(lineptr, NULL);
-if (cmd_args && cmd_args[0] && !handle_builtin(cmd_args))
+cmd_args = tokenize_input(lineptr, &num_tokens);
+if (!cmd_args)
+continue;
+if (cmd_args[0] == NULL)
 {
-execmd(cmd_args);
 free(cmd_args);
+continue;
 }
-else if (cmd_args)
+if (handle_builtin(cmd_args))
+{
+free(cmd_args);
+break;
+}
+execmd(cmd_args);
 free(cmd_args);
 }
 free(lineptr);
