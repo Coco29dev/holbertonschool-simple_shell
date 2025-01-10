@@ -13,8 +13,8 @@ exit(EXIT_SUCCESS); /* Quitte le programme avec un statut de succes */
 /**
  * env_builtin - Prints all the environment variables.
  * This function iterates through the environment variable array
- * (environ) and prints each variable to the standard output, one per
- * line.
+ * (environ) and prints each variable to the standard output, one per line.
+ *
  */
 
 void env_builtin(void)
@@ -25,7 +25,7 @@ void env_builtin(void)
 	while (*env != NULL)
 	/* Tant que l'element actuel de l'environnement n'est pas NULL */
 	{
-		printf("%s\n", *env); /* Affiche la variable d'environnement courante */
+		printf("%s\n", *env); /* Affiche variable env courante */
 		env++; /* Passee a la variable d'environnement suivante */
 	}
 }
@@ -48,16 +48,16 @@ int handle_builtin(char **cmd_args)
 	if (strcmp(cmd_args[0], "env") == 0)
 	/* Si la commande est "env" */
 	{
-		env_builtin(); /* Appelle la fonction pour afficher les variables d'env */
-		return (1); /* Retourne 1 pour indiquer que la commande a ete traitee */
+		env_builtin(); /* Appelle fctn pour afficher variables d'env */
+		return (1); /* Return 1 pour indiquer que cmd a ete traitee */
 	}
 
 	if (strcmp(cmd_args[0], "exit") == 0)
 	/* Si la commande est "exit" */
 	{
 	cmd_exit(); /* Appelle la fonction pour quitter le shell */
-	return (1); /* Retourne 1 pour indiquer que la commande a ete traitee */
+	return (1); /* Return 1 pour indiquer que la commande a ete traitee */
 	}
 
-	return (0); /* Retourne 0 si la commande n'est pas une commande interne */
+	return (0); /* Return 0 si commande n'est pas une commande interne */
 }
