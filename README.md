@@ -132,6 +132,6 @@ The project's manual page, formatted for compatibility with the UNIX man command
 
 ## Contributors
 
-Corentin Robles
+[Corentin Robles](https://github.com/Coco29dev)
 
-Damien Boulet
+[Damien Boulet](https://github.com/Damien353)
