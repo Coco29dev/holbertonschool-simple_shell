@@ -1,6 +1,6 @@
-.TH SIMPLE SHELL
-.SH SIMPLE SHELL
-simple shell - 
+.TH HOLBERTON_SIMPLE_SHELL 1 "January 2025" "1.0" "Manual page for Holberton Simple Shell"
+.SH NAME
+simple shell - loop that reads commands and executes them.
 
 .SH SYNOPSIS
 .B SIMPLE SHELL
