@@ -1,6 +1,10 @@
 #include "shell.h"
-
-
+/**
+ * main - The main shell loop that reads commands and executes them.
+ * This function displays the prompt, reads user input, tokenizes the command,
+ * and then executes it.
+ * Return: 0
+ */
 int main(void)
 {
 	char *lineptr = NULL; /* Pointeur pour stocker ligne entree user */
