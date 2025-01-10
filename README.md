@@ -128,7 +128,7 @@ The project's manual page, formatted for compatibility with the UNIX man command
 
 ### Non-interactive mode
 
-<a href="https://ibb.co/bd6gLdx"><img src="https://i.ibb.co/3hTyWhw/Capture-d-e-cran-2025-01-10-a-09-49-59.png" alt="Capture-d-e-cran-2025-01-10-a-09-49-59" border="0"></a>
+<a href="https://ibb.co/ZVPTLpk"><img src="https://i.ibb.co/vHGzw6K/Capture-d-e-cran-2025-01-10-a-09-54-59.png" alt="Capture-d-e-cran-2025-01-10-a-09-54-59" border="0"></a>
 
 ## Contributors
 
