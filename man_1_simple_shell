@@ -5,10 +5,21 @@ simple shell -
 .SH SYNOPSIS
 .B SIMPLE SHELL
 #include"shell.h"
+int main(void)
 
 .SH DESCRIPTION
+Shell -- The main shell loop that reads commands and executes them.
+
+The code represents the main loop of a shell that reads user commands, splits them into arguments, and executes them.
+If the input is valid, it is tokenized and checked to determine if it's a built-in command or not. If it's a built-in command,
+it's executed; otherwise, the shell uses 'execmd' to run the command. After each execution, the memory allocated for the arguments is freed,
+and the process repeats until the user exits or reading fails. Finally, the memory allocated for the input line is also freed 
+before exiting cleanly.
+
 
 .SH RETURN VALUE
+The main function returns 0 to indicate that the program has terminated normally. This means that the shell was executed without error and 
+the execution ended cleanly, either after the main loop finishes following user input or if reading the input fails.
 
 .SH EXAMPLES
 
