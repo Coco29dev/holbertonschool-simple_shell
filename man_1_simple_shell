@@ -1,1 +1,17 @@
-manpage
+.TH SIMPLE SHELL
+.SH SIMPLE SHELL
+simple shell - 
+
+.SH SYNOPSIS
+.B SIMPLE SHELL
+#include"shell.h"
+
+.SH DESCRIPTION
+
+.SH RETURN VALUE
+
+.SH EXAMPLES
+
+.SH DATE
+
+.SH AUTHORS
