@@ -1,6 +1,16 @@
 #include"shell.h"
 
 /**
+ * cmd_exit - quitte le programme avec un statut de succes
+ * Return: nothing
+ */
+void cmd_exit(void)
+{
+exit(EXIT_SUCCESS); /* Quitte le programme avec un statut de succes */
+}
+
+
+/**
  * env_builtin - Prints all the environment variables.
  * This function iterates through the environment variable array
  * (environ) and prints each variable to the standard output, one per

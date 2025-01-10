@@ -8,6 +8,9 @@
 #include <sys/wait.h>
 #include <string.h>
 
+#define PROMPT "($) "
+#define DELIM " \n"
+
 extern char **environ;
 
 char **tokenize_input(char *lineptr, int *num_tokens);
