@@ -22,7 +22,21 @@ The main function returns 0 to indicate that the program has terminated normally
 the execution ended cleanly, either after the main loop finishes following user input or if reading the input fails.
 
 .SH EXAMPLES
+.PP
+./hsh
+.PP
+.RS
+($) ls
+.PP
+.RS
+AUTHORS  README.md  builtins.c  exec.c  hsh  input.c  man_1_simple_shell  path.c  shell.c  shell.h
 
+.RE
+($) pwd
+.PP
+.RS
+/holbertonschool-simple_shell
+.RE
 
 .SH DATE
 10 Janvier 2025
